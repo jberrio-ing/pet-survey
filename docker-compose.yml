@@ -1,0 +1,54 @@
+volumes:
+  mysql_data:
+
+networks:
+  pet_survey_network:
+
+services:
+  mysql:
+    image: mysql:8.4.6
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - pet_survey_network
+  backend:
+    image: pet_survey_backend_image:latest
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    container_name: pet_survey_backend
+    restart: always
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${MYSQL_DATABASE}
+    ports:
+      - "${BACKEND_PORT-3000}:3000"
+    depends_on:
+      - mysql
+    networks:
+      - pet_survey_network
+  frontend:
+    image: pet_survey_frontend_image:latest
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:${BACKEND_PORT-3000}
+    container_name: pet_survey_frontend
+    restart: always
+    ports:
+      - "${FRONTEND_PORT-80}:80"
+    depends_on:
+      - backend
+    networks:
+      - pet_survey_network
