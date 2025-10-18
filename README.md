@@ -325,10 +325,6 @@ El backend tiene CORS habilitado para permitir peticiones desde el frontend en d
 
 Este proyecto es de uso educativo.
 
-## 👨‍💻 Autor
-
-Desarrollado para la Universidad Autónoma de Nariño (UAN)
-
 ---
 
 **Nota**: Asegúrate de tener MySQL corriendo y las variables de entorno configuradas antes de ejecutar el proyecto.
