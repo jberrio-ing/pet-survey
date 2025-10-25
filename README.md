@@ -38,6 +38,7 @@ MYSQL_PASSWORD=tu_password_db
 # Puertos (opcionales, valores por defecto)
 BACKEND_PORT=3000
 FRONTEND_PORT=80
+API_URL=http://localhost:${BACKEND_PORT}
 ```
 
 ### 2. Comandos de Docker Compose
